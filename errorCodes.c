@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include "errorCodes.h"
 
 int exit_with_message(ErrorCode code) {

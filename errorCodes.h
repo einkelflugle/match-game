@@ -1,5 +1,5 @@
-#ifndef ERROR_CODES_H
-#define ERROR_CODES_H
+#ifndef ERROR_CODES_H_
+#define ERROR_CODES_H_
 
 typedef enum ErrorCode {
   E_OK = 0,

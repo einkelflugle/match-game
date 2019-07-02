@@ -13,16 +13,16 @@ debug: clean all
 clean:
 	rm *.o match
 
-match.o: match.c
+match.o: match.c errorCodes.h gridFile.h grid.h
 	$(CC) $(CFLAGS) -c match.c -o match.o
 
-errorCodes.o: errorCodes.c
+errorCodes.o: errorCodes.c errorCodes.h
 	$(CC) $(CFLAGS) -c errorCodes.c -o errorCodes.o
 
-grid.o: grid.c
+grid.o: grid.c grid.h
 	$(CC) $(CFLAGS) -c grid.c -o grid.o
 
-gridFile.o: gridFile.c
+gridFile.o: gridFile.c gridFile.h grid.h
 	$(CC) $(CFLAGS) -c gridFile.c -o gridFile.o
 
 match: match.o errorCodes.o grid.o gridFile.o

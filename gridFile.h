@@ -1,5 +1,5 @@
-#ifndef GRID_FILE_H
-#define GRID_FILE_H
+#ifndef GRID_FILE_H_
+#define GRID_FILE_H_
 
 #include "grid.h"
 

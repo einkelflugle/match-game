@@ -1,5 +1,5 @@
-#ifndef GRID_H
-#define GRID_H
+#ifndef GRID_H_
+#define GRID_H_
 
 #include <stdbool.h>
 
