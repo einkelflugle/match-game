@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
     return exit_with_message(E_UNREADABLE_GRID_CONTENTS);
   }
   if (grid->rows != height || grid->cols != width) {
+    free_grid(grid);
     return exit_with_message(E_UNREADABLE_GRID_CONTENTS);
   }
   print_grid(grid, stdout);

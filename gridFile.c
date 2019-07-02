@@ -20,27 +20,48 @@ Grid* read_gridfile(const char* filename) {
 
   int i = 0; // Position in row
   int j = 0; // Position in list of rows
-  while (!feof(file)) {
+  while (true) {
     char c = fgetc(file);
-    // Newline signals the end of a row
-    if (c == '\n') {
+    if (c == EOF) {
+      // c is EOF, the file has been read
+      break;
+    } else if (c == '\n') {
+      // c is a newline, signalling the end of a row
       if (j == 0) {
+        // Width is unknown since this is the first row, set it
         width = i;
+      } else if (i < width) {
+        // Width is known but this row was shorter than it
+        for (int p = 0; p < j; p++) {
+          free(rows[p]);
+        }
+        free(row);
+        free(rows);
+        fclose(file);
+        return NULL;
       }
       rows[j] = row;
       i = 0;
       j++;
-    } else if (c == EOF) {
-      break;
     } else {
       // c is a regular grid cell character
       // If width is not yet known, realloc the row
       if (j == 0) {
         row = (char*) realloc(row, sizeof(char) * (i + 1));
       } else {
+        // Width is known
         if (i == 0) {
-          // Width is known and this is the start of a new row, alloc it
+          // This is the start of a new row, alloc it
           row = (char*) malloc(sizeof(char) * width);
+        } else if (i >= width) {
+          // Row is too long
+          for (int p = 0; p < j; p++) {
+            free(rows[p]);
+          }
+          free(row);
+          free(rows);
+          fclose(file);
+          return NULL;
         }
       }
       // If this is a new row, realloc the list of rows
