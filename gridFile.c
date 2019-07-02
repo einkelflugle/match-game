@@ -74,6 +74,12 @@ Grid* read_gridfile(const char* filename) {
   }
   fclose(file);
   height = j;
+  if (height == 0) {
+    // No lines were read
+    free(rows);
+    free(row);
+    return NULL;
+  }
 
   Grid* grid = (Grid*) malloc(sizeof(Grid));
   grid->rows = height;

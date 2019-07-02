@@ -25,4 +25,9 @@ void print_grid(Grid* grid, FILE* out);
  */
 void free_grid(Grid* grid);
 
+/**
+ * Returns true if there are legal moves to be made on the given Grid.
+ */
+bool has_legal_moves(Grid* grid);
+
 #endif

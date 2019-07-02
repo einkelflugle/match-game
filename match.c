@@ -40,6 +40,11 @@ int main(int argc, char** argv) {
     return exit_with_message(E_UNREADABLE_GRID_CONTENTS);
   }
   print_grid(grid, stdout);
+  if (has_legal_moves(grid)) {
+    printf("%s\n", "Grid has legal moves.");
+  } else {
+    printf("%s\n", "Game over: Grid has no legal moves.");
+  }
   free_grid(grid);
 
   return 0;
