@@ -19,6 +19,8 @@ void print_horizontal_border(int length, FILE* out);
  * Searches the neighbouring cells to the cell at the given row and column
  * position for a matching cell value. If a neighbouring cell is found in the
  * cellsToIgnore array, it is not considered a matching cell.
+ * The cellsToIgnore parameter is optional (ie. can be NULL). If null, all
+ * neighbours will be considered.
  *
  * Returns true if a matching neighbour cell was found and sets foundRow and
  * foundCol to the position of the found cell.
@@ -40,28 +42,30 @@ void print_horizontal_border(int length, FILE* out) {
 bool find_matching_neighbour(Grid* grid, int row, int col, int* const foundRow,
       int* const foundCol, bool* const * const cellsToIgnore) {
     if (row - 1 >= 0 && grid->cells[row - 1][col] == grid->cells[row][col]) {
-      if (cellsToIgnore[row - 1][col] == false) {
+      if (cellsToIgnore == NULL || cellsToIgnore[row - 1][col] == false) {
         *foundRow = row - 1;
         *foundCol = col;
         return true;
       }
     }
-    if (row + 1 < grid->rows && grid->cells[row + 1][col] == grid->cells[row][col]) {
-      if (cellsToIgnore[row + 1][col] == false) {
+    if (row + 1 < grid->rows &&
+          grid->cells[row + 1][col] == grid->cells[row][col]) {
+      if (cellsToIgnore == NULL || cellsToIgnore[row + 1][col] == false) {
         *foundRow = row + 1;
         *foundCol = col;
         return true;
       }
     }
     if (col - 1 >= 0 && grid->cells[row][col - 1] == grid->cells[row][col]) {
-      if (cellsToIgnore[row][col - 1] == false) {
+      if (cellsToIgnore == NULL || cellsToIgnore[row][col - 1] == false) {
         *foundRow = row;
         *foundCol = col - 1;
         return true;
       }
     }
-    if (col + 1 < grid->cols && grid->cells[row][col + 1] == grid->cells[row][col]) {
-      if (cellsToIgnore[row][col + 1] == false) {
+    if (col + 1 < grid->cols &&
+          grid->cells[row][col + 1] == grid->cells[row][col]) {
+      if (cellsToIgnore == NULL || cellsToIgnore[row][col + 1] == false) {
         *foundRow = row;
         *foundCol = col + 1;
         return true;
@@ -100,16 +104,8 @@ bool has_legal_moves(Grid* grid) {
       if (grid->cells[i][j] == EMPTY_GRID_CELL) {
         continue;
       }
-      if (i - 1 >= 0 && grid->cells[i - 1][j] == grid->cells[i][j]) {
-        return true;
-      }
-      if (i + 1 < grid->rows && grid->cells[i + 1][j] == grid->cells[i][j]) {
-        return true;
-      }
-      if (j - 1 >= 0 && grid->cells[i][j - 1] == grid->cells[i][j]) {
-        return true;
-      }
-      if (j + 1 < grid->cols && grid->cells[i][j + 1] == grid->cells[i][j]) {
+      int foundRow, foundCol;
+      if (find_matching_neighbour(grid, i, j, &foundRow, &foundCol, NULL)) {
         return true;
       }
     }
