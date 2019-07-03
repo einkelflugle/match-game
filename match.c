@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "errorCodes.h"
 #include "gridFile.h"
@@ -10,6 +11,40 @@
 
 // Maximum number of rows/columns in a valid grid
 #define MAX_GRID_DIMENSION 1000
+
+void play_game(Grid* grid) {
+  while (has_legal_moves(grid)) {
+    print_grid(grid, stdout);
+    int row, col;
+    while (true) {
+      printf("> ");
+      char buf[256];
+      if (fgets(buf, 256, stdin) == NULL) {
+        fprintf(stderr, "End of user input\n");
+        free_grid(grid);
+        return;
+      }
+      if (sscanf(buf, "%d %d", &row, &col) == 2) {
+        // Check if the cell coordinates entered are out of bounds
+        if (row < 0 || row >= grid->rows || col < 0 || col >= grid->cols) {
+          continue;
+        }
+        if (process_move(grid, row, col)) {
+          break;
+        } else {
+          continue;
+        }
+      }
+      if (strstr(buf, "w")) {
+        // Write grid to file
+        printf("Written to file\n");
+      }
+    }
+  }
+  print_grid(grid, stdout);
+  printf("No moves left\n");
+  free_grid(grid);
+}
 
 int main(int argc, char** argv) {
   if (argc != 4) {
@@ -39,13 +74,8 @@ int main(int argc, char** argv) {
     free_grid(grid);
     return exit_with_message(E_UNREADABLE_GRID_CONTENTS);
   }
-  print_grid(grid, stdout);
-  if (has_legal_moves(grid)) {
-    printf("%s\n", "Grid has legal moves.");
-  } else {
-    printf("%s\n", "Game over: Grid has no legal moves.");
-  }
-  free_grid(grid);
+
+  play_game(grid);
 
   return 0;
 }

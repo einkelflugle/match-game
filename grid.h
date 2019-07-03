@@ -30,4 +30,12 @@ void free_grid(Grid* grid);
  */
 bool has_legal_moves(Grid* grid);
 
+/**
+ * Alters the given grid for a player removing the cell at the given row and
+ * column position, starting from (0,0) in the top left corner.
+ * Returns true if the move resulted in a change in the board; false if no
+ * cells were altered.
+ */
+bool process_move(Grid* grid, int row, int col);
+
 #endif
