@@ -11,7 +11,7 @@ debug: CFLAGS += -g -DDEBUG
 debug: clean all
 
 clean:
-	rm *.o match
+	rm -f *.o match
 
 match.o: match.c errorCodes.h gridFile.h grid.h
 	$(CC) $(CFLAGS) -c match.c -o match.o
