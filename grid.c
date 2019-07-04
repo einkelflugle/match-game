@@ -154,11 +154,52 @@ bool process_move(Grid* grid, int row, int col) {
         }
       }
     }
-    // Free and exit
+    // Free the memory storing cells to delete
     for (int i = 0; i < grid->rows; i++) {
       free(cellsToDelete[i]);
     }
     free(cellsToDelete);
+    // Shift all cells down to fill any vertical gaps
+    for (int i = 0; i < grid->rows; i++) {
+      // Repeat this process as many times as the number of rows to ensure that
+      // there are no outstanding gaps in any column
+      for (int row = 1; row < grid->rows; row++) {
+        for (int col = 0; col < grid->cols; col++) {
+          if (grid->cells[row][col] != EMPTY_GRID_CELL) {
+            // Only shift down when there is an empty cell
+            continue;
+          }
+          // The current position is an empty cell, check the cell directly
+          // above it to see whether it is empty or not
+          if (grid->cells[row - 1][col] == EMPTY_GRID_CELL) {
+            continue;
+          }
+          // The gap has a non-empty cell above it, so swap the two cells
+          grid->cells[row][col] = grid->cells[row - 1][col];
+          grid->cells[row - 1][col] = EMPTY_GRID_CELL;
+        }
+      }
+    }
+    // Shift any empty columns to the left, repeating the process as many times
+    // as the number of columns
+    for (int i = 0; i < grid->cols; i++) {
+      for (int col = 0; col < grid->cols - 1; col++) {
+        bool isEmpty = true;
+        for (int row = 0; row < grid->rows; row++) {
+          if (grid->cells[row][col] != EMPTY_GRID_CELL) {
+            isEmpty = false;
+            break;
+          }
+        }
+        if (!isEmpty) {
+          continue;
+        }
+        for (int row = 0; row < grid->rows; row++) {
+          grid->cells[row][col] = grid->cells[row][col + 1];
+          grid->cells[row][col + 1] = EMPTY_GRID_CELL;
+        }
+      }
+    }
     return true;
   } else {
     // Free and exit
