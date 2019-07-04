@@ -14,7 +14,7 @@ For example:
 ```
 $ ./match 5 5 grids/grid1.txt
 ```
-At the prompt, enter two space-separated numbers representing the row and column index of the cell you wish to remove (starting from 0).
+At the prompt, enter two space-separated numbers representing the row and column index of the cell you wish to remove, starting from 0, with the top left corner being (0, 0).
 To save the current state of the grid to a file, type "w" followed by the name of the file. For example:
 ```
 > whello.txt
