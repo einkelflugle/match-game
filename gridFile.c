@@ -89,3 +89,17 @@ Grid* read_gridfile(const char* filename) {
   return grid;
 }
 
+bool write_gridfile(const char* filename, Grid* grid) {
+  FILE* file = fopen(filename, "w");
+  if (file == NULL) {
+    return false;
+  }
+  for (int row = 0; row < grid->rows; row++) {
+    for (int col = 0; col < grid->cols; col++) {
+      fprintf(file, "%c", grid->cells[row][col]);
+    }
+    fprintf(file, "\n");
+  }
+  fclose(file);
+  return true;
+}

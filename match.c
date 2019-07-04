@@ -37,7 +37,13 @@ void play_game(Grid* grid) {
       }
       if (strstr(buf, "w")) {
         // Write grid to file
-        printf("Written to file\n");
+        char filename[256] = {0};
+        sscanf(buf, "w%s\n", filename);
+        if (write_gridfile(filename, grid)) {
+          printf("Save complete\n");
+        } else {
+          printf("Can not open file for write\n");
+        }
       }
     }
   }

@@ -10,4 +10,12 @@
  */
 Grid* read_gridfile(const char* filename);
 
+/**
+ * Saves the given Grid to a file with the given filename.
+ *
+ * Returns true if the file was written successfully, and false if there was an
+ * error while opening the file to write.
+ */
+bool write_gridfile(const char* filename, Grid* grid);
+
 #endif
